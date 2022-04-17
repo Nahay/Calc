@@ -54,7 +54,7 @@ const Calc = ({calcType}) => {
         
         setTbl(tempTbl);
 
-    }, [])
+    }, [calcType])
 
     const checkAdd = (e) => {
         e.preventDefault();
