@@ -47,6 +47,7 @@ const Calc = ({calcType}) => {
                 case ':' :
                     rightRep = tbl[current][0] / tbl[current][1]
                     break;
+                default: break;
             }
 
             if (parseInt(rep) === rightRep) {
