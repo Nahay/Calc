@@ -15,9 +15,41 @@ const Calc = ({calcType}) => {
         const genNum = () => Math.floor(Math.random() * 10)+1;
         let tempTbl = [];
 
-        for (let i = 0; i < 10; i++) {
-            let numbs = [genNum(), genNum()];
-            tempTbl.push(numbs);
+        if (calcType === ':') {
+            for (let i = 0; i < 10; i++) {
+                let ended = false;
+
+                while (!ended) {
+                    let x = genNum();
+                    let y = genNum();
+                    if (x % y === 0) {
+                        ended = true;
+                        let numbs = [x, y];
+                        tempTbl.push(numbs);
+                    }
+                }
+            }
+        }
+        else if (calcType === '-') {
+            for (let i = 0; i < 10; i++) {
+                let ended = false;
+
+                while (!ended) {
+                    let x = genNum();
+                    let y = genNum();
+                    if (y <= x) {
+                        ended = true;
+                        let numbs = [x, y];
+                        tempTbl.push(numbs);
+                    }
+                }
+            }
+        }
+        else {
+            for (let i = 0; i < 10; i++) {
+                let numbs = [genNum(), genNum()];
+                tempTbl.push(numbs);
+            }
         }
         
         setTbl(tempTbl);
@@ -28,7 +60,7 @@ const Calc = ({calcType}) => {
         e.preventDefault();
         let currentRound = current;
 
-        if (Number(rep)) { 
+        if (!isNaN(rep) && rep !== '') { 
 
             let tempBool = [...tblBool];
 
@@ -69,7 +101,7 @@ const Calc = ({calcType}) => {
 
     const handleChangeRep = (e) => {
         const val = e.target.value;
-        !isNaN(val) && val !== "" && setRep(val);
+        !isNaN(val) && setRep(val);
     }
 
     const getScore = (table) => {
