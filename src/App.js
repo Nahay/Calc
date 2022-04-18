@@ -13,16 +13,16 @@ function App() {
 
         <Switch>
           <Route exact path="/">
-            <Calc calcType="+"/>
+            <Calc calcType="+" min={2} max={20}/>
           </Route>
           <Route exact path="/soustraction">
-            <Calc calcType="-"/>
+            <Calc calcType="-" min={2} max={20}/>
           </Route>
           <Route exact path="/multiplication">
-            <Calc calcType="x"/>
+            <Calc calcType="x" min={2} max={20}/>
           </Route>
           <Route exact path="/division">
-            <Calc calcType=":"/>
+            <Calc calcType=":" min={2} max={40}/>
           </Route>
         </Switch>
       </div>

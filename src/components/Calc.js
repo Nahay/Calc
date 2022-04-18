@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 
-const Calc = ({calcType}) => {
+const Calc = ({calcType, max, min}) => {
 
     const [current, setCurrent] = useState(0);
     const [tbl, setTbl] = useState(new Array(10).fill(0));
@@ -12,20 +12,54 @@ const Calc = ({calcType}) => {
 
     useEffect (() => {
 
-        const genNum = () => Math.floor(Math.random() * 10)+1;
+        const genNum = (a,b) => Math.floor(Math.random() * (b-a+1)+a);
         let tempTbl = [];
+
+
+        const listePremiers = (n) => {
+
+            let tbl = [], racine = Math.sqrt(n), output = [];
+        
+            // tableau de 0 à (n - 1)
+            for (let i = 0; i < n; i++) {
+                tbl.push(true);
+            }
+        
+            // Remove multiples of primes starting from 2, 3, 5,...
+            for (let i = 2; i <= racine; i++) {
+                if (tbl[i]) {
+                    // on va de 4 à 4 plus petit que 1000000, et on augmente de 4+2 = 6
+                    for (let j = i * i; j < n; j += i) {
+                        tbl[j] = false;
+                    }
+                }
+            }
+            
+            for (let i = 2; i < n; i++) {
+                if(tbl[i]) {
+                    output.push(i);
+                }
+            }
+        
+            return output;
+        }
 
         if (calcType === ':') {
             for (let i = 0; i < 10; i++) {
                 let ended = false;
+                const premiers = listePremiers(max);
 
                 while (!ended) {
-                    let x = genNum();
-                    let y = genNum();
-                    if (x % y === 0) {
-                        ended = true;
-                        let numbs = [x, y];
-                        tempTbl.push(numbs);
+                    let x = genNum(min, max);
+
+                    if (!premiers.find(n => n === x)) {
+                        let y = genNum(min, max);
+
+                        if (x % y === 0 && x !== y) {
+                            ended = true;
+                            let numbs = [x, y];
+                            tempTbl.push(numbs);
+                        }
                     }
                 }
             }
@@ -35,32 +69,30 @@ const Calc = ({calcType}) => {
                 let ended = false;
 
                 while (!ended) {
-                    let x = genNum();
-                    let y = genNum();
-                    if (y <= x) {
+                    let x = genNum(min, max);
+                    let y = genNum(min, x);
                         ended = true;
                         let numbs = [x, y];
                         tempTbl.push(numbs);
-                    }
                 }
             }
         }
         else {
             for (let i = 0; i < 10; i++) {
-                let numbs = [genNum(), genNum()];
+                let numbs = [genNum(min, max), genNum(min, max)];
                 tempTbl.push(numbs);
             }
         }
         
         setTbl(tempTbl);
 
-    }, [calcType])
+    }, [])
 
     const checkAdd = (e) => {
         e.preventDefault();
         let currentRound = current;
 
-        if (!isNaN(rep) && rep !== '') { 
+        if (!isNaN(rep) && rep !== '') {
 
             let tempBool = [...tblBool];
 
